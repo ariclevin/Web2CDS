@@ -102,9 +102,9 @@
         submitRequest = function () {
 
             //set Flow request URL - available once Flow Request step is saved 
-            var requestUrl = "https://prod-16.westus.logic.azure.com:443/workflows/8b75647b40b64cf18ca48f41de16ccbf/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qZrp75-e0RTL-FHBt7vmDmNckd06w9nNrWbO9plI5Cw";
+            var requestUrl = "FlowHTTPRequestUrl";
             if ($("#submissionmethod").val() == "2")
-                requestUrl = "https://createcdslead.azurewebsites.net/api/HttpTrigger1?code=2mUZySX4UNDeUg0S3npgQKslThPZ7yeeOL0WfTwB2arYCU/BPm6LJA==";
+                requestUrl = "AzureFunctionHTTPRequestUrl";
 
             //set Lead object
             var requestData = {
