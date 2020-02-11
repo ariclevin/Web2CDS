@@ -1,0 +1,40 @@
+
+/* Global Headings
+------------------------------------------------------------*/
+
+h1,
+h2 {
+    letter-spacing: -1px;
+}
+
+    h1,
+    h1 small,
+    h2,
+    h2 small,
+    h3,
+    h3 small {
+        font-weight: 300;
+    }
+
+h1, h2, h3 {
+    font-family: FrutigerLT-Light,sans-serif;
+    color: #00548e;
+}
+
+table.section
+{
+    table-layout: fixed;
+    width: 90%;
+}
+
+td.cell
+{
+    vertical-align: top;
+}
+
+.cell
+{
+    padding: 0 28px 20px;
+}
+
+

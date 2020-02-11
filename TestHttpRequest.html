@@ -1,0 +1,142 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Contact Us in the Cloud</title>
+    <script src="jquery-3.4.1.min.js"></script>
+    <link href="bootstrap.min.css" rel="stylesheet" />
+    <link href="main.css" rel="stylesheet" />
+</head>
+<body>
+
+        <div class="page-heading">
+				<div class="container">
+						<div class="page-header">
+							<h1>
+								<span class="xrm-attribute xrm-editable-text"><span class="xrm-attribute-value">Contact Us</span></span>
+							</h1>
+						</div>
+						<div class="notifications"></div>
+					
+				</div>
+			</div>
+
+    <div class="container">
+        <table role="presentation" class="section">
+                <tr>
+                        <td colspan="1" rowspan="1" class="clearfix cell text form-control-cell">
+                            <div class="info">
+                                <label for="submissionmethod" id="submissionmethod_label">Subject</label>
+                            </div>
+                            <div class="control">
+                                <select name="submissionmethod" id="submissionmethod" class="form-control picklist ">
+                                    <option selected="selected" value="1">Use Flow</option>
+                                    <option value="2">Use Azure Function</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    
+
+            <tr>
+                <td colspan="1" rowspan="1" class="clearfix cell text form-control-cell">
+                    <div class="info">
+                        <label for="subject" id="subject_label">Subject</label>
+                    </div>
+                    <div class="control">
+                        <input type="text" id="subject" name="subject" class="text form-control " placeholder="Please enter the reason for contacting us">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1" rowspan="1" class="clearfix cell text form-control-cell">
+                    <div class="info">
+                        <label for="firstname" id="firstname_label">First Name</label>
+                    </div>
+                    <div class="control">
+                        <input type="text" id="firstname" name="firstname" class="text form-control " placeholder="Please enter your first name" maxlength="50">
+                    </div>                
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1" rowspan="1" class="clearfix cell text form-control-cell">
+                    <div class="info">
+                        <label for="lastname" id="lastname_label">Last Name</label>
+                    </div>
+                    <div class="control">
+                        <input type="text" id="lastname" name="lastname" class="text form-control " placeholder="Please enter your last name" maxlength="50">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1" rowspan="1" class="clearfix cell text form-control-cell">
+                    <div class="info">
+                        <label for="emailaddress" id="emailaddress_label">Email Address</label>
+                    </div>
+                    <div class="control">
+                        <input type="text" id="emailaddress" name="emailaddress" class="text form-control " placeholder="Please enter your email address" maxlength="50">
+                    </div>            
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1" rowspan="1" class="clearfix cell text form-control-cell">
+                    <div class="info">
+                        <label for="mobilephone" id="mobilephone_label">Mobile Phone</label>
+                    </div>
+                    <div class="control">
+                        <input type="text" id="mobilephone" name="mobilephone" class="text form-control " placeholder="Please enter your cell number" maxlength="25">
+                    </div>                           
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input value="Submit Form" type="button" class="submit-btn btn btn-primary" onclick="submitRequest()">
+                </td>
+            </tr>
+        </table>    
+        <br />
+        <div id="responsetext"></div>
+    </div>
+    <script type="text/javascript">
+
+        // Send new Lead request to Microsoft Flow
+        submitRequest = function () {
+
+            //set Flow request URL - available once Flow Request step is saved 
+            var requestUrl = "https://prod-16.westus.logic.azure.com:443/workflows/8b75647b40b64cf18ca48f41de16ccbf/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qZrp75-e0RTL-FHBt7vmDmNckd06w9nNrWbO9plI5Cw";
+            if ($("#submissionmethod").val() == "2")
+                requestUrl = "https://createcdslead.azurewebsites.net/api/HttpTrigger1?code=2mUZySX4UNDeUg0S3npgQKslThPZ7yeeOL0WfTwB2arYCU/BPm6LJA==";
+
+            //set Lead object
+            var requestData = {
+                Subject: $("#subject").val(),
+                FirstName: $("#firstname").val(),
+                LastName: $("#lastname").val(),
+                EmailAddress: $("#emailaddress").val(),
+                MobilePhone: $("#mobilephone").val()                
+            };
+
+            //send request
+            var req = new XMLHttpRequest();
+            req.open("POST", requestUrl, true);
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Access-Control-Allow-Origin", "*");
+            req.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    req.onreadystatechange = null;
+                    //handle success
+                    if (this.status == 200) {
+                        $("#responsetext").text(this.response);
+                    }
+                    //handle failure
+                    else {
+                        $("#responsetext").text(this.response);
+                    }
+                }
+            }
+            //send request
+            req.send(window.JSON.stringify(requestData));
+        }
+    </script>
+</body>
+</html>
